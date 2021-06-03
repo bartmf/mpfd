@@ -5,6 +5,7 @@
 Для полноценной работы требуется python 3.0+ 
 
 Так же необходимы модули psutil и xlsxwriter
+
 pip install psutil
 
 pip install xlsxwriter
