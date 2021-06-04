@@ -86,7 +86,7 @@ if __name__ == "__main__":
             exit(0)
         else:
             arg = find_process(inp)
-            if (arg == False):
+            if not arg:
                 continue
             break
     thread = threading.Thread(target=info_process, args=(arg, time_slepp,))
