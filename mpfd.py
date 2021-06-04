@@ -4,7 +4,6 @@ import psutil
 from datetime import datetime
 import xlsxwriter
 
-
 loop = True
 row = 2
 
@@ -25,7 +24,7 @@ def write_value_to_xlsx(date, cpu_value, mem_value,
     row += 1
 
 
-def creat_graf(workbook=xlsxwriter.Workbook, name_proc = str):
+def creat_graf(workbook=xlsxwriter.Workbook, name_proc=str):
     worksheet = workbook.add_worksheet('График')
     chart1 = workbook.add_chart({'type': 'line'})
     chart1.add_series({
@@ -38,8 +37,8 @@ def creat_graf(workbook=xlsxwriter.Workbook, name_proc = str):
         'categories': ['Показатели', 1, 0, row - 1, 0],
         'values': ['Показатели', 1, 2, row - 1, 2],
     })
-    chart1.set_size({'width' : 800, 'height' : 500})
-    chart1.set_title({'name': "График потребления %s"%name_proc})
+    chart1.set_size({'width': 800, 'height': 500})
+    chart1.set_title({'name': "График потребления %s" % name_proc})
     chart1.set_x_axis({'name': 'дата/время'})
     chart1.set_y_axis({'name': 'Загрузка в %'})
     chart1.set_style(11)
@@ -58,7 +57,7 @@ def find_process(name=str):
     return False
 
 
-def info_process(proc=psutil.Process, time_sleep = int):
+def info_process(proc=psutil.Process, time_sleep=int):
     # f = open('/home/bart/Документы/test.txt', 'w')
     # while (loop):
     #     f.write('date: %s\ttime: %s\tprocessor_name: %s\tcpu = %d\tmemmory = %d\n' % (
@@ -66,9 +65,12 @@ def info_process(proc=psutil.Process, time_sleep = int):
     #     time.sleep(10)
 
     xls_blocks = new_xlsx(proc.name())
-    while (loop):
-        write_value_to_xlsx(datetime.now().strftime('%H:%M:%S'), proc.cpu_percent(), proc.memory_percent(), xls_blocks[1])
-        time.sleep(time_sleep)
+    while loop:
+        write_value_to_xlsx(datetime.now().strftime('%H:%M:%S'), proc.cpu_percent(), proc.memory_percent(),
+                            xls_blocks[1])
+        for i in range(time_sleep):
+            time.sleep(1)
+            if not loop: break
     creat_graf(xls_blocks[0], xls_blocks[2])
     xls_blocks[0].close()
     print('Отчёт сформирован')
@@ -77,26 +79,26 @@ def info_process(proc=psutil.Process, time_sleep = int):
 if __name__ == "__main__":
     arg = False
     inp = str
-    while (1):
+    while True:
         inp = input('Введите имя процесса\t(для выхода из программы - введите \"exit\")\n')
         time_slepp = int(input('Введите выборку в секундах\n'))
-        if (inp == 'exit'):
+        if inp == 'exit':
             exit(0)
         else:
             arg = find_process(inp)
             if (arg == False):
                 continue
             break
-    thread = threading.Thread(target=info_process, args=(arg, time_slepp, ))
+    thread = threading.Thread(target=info_process, args=(arg, time_slepp,))
     thread.start()
     date_start = datetime.now()
-    while (loop):
+    while loop:
         inp = input("Введите номер пункта для управления.\n"
                     "Меню программы:\n"
                     "1. Узнать время работы программы\n"
                     "2. Выход из программы\n"
                     )
-        if (inp == '1'):
+        if inp == '1':
             print((datetime.now() - date_start))
         else:
             loop = False
