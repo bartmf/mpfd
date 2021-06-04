@@ -100,5 +100,7 @@ if __name__ == "__main__":
                     )
         if inp == '1':
             print((datetime.now() - date_start))
-        else:
+        elif inp == '2':
             loop = False
+        else:
+            continue
