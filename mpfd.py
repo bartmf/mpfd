@@ -99,7 +99,8 @@ if __name__ == "__main__":
                     "2. Выход из программы\n"
                     )
         if inp == '1':
-            print((datetime.now() - date_start))
+            #time_work =
+            print(str(datetime.now() - date_start) + "\t записано результатов: %d"%(row-2))
         elif inp == '2':
             loop = False
         else:
